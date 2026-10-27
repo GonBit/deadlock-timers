@@ -26,6 +26,7 @@ public partial class MainWindow : Window
     private int _defaultWarn;
     private HotkeyService? _hotkeys;
     private readonly DispatcherTimer _tick = new() { Interval = TimeSpan.FromMilliseconds(100) };
+    private SpeechService? _speech;
     private bool _editMode;
     private int _topmostCounter;
     private string _statusExtra = "";
@@ -53,6 +54,9 @@ public partial class MainWindow : Window
         Top = _settings.Overlay.Top;
         Opacity = _settings.Overlay.Opacity;
 
+        if (_settings.Speech.Enabled)
+            _speech = new SpeechService(_settings.Speech.Volume, _settings.Speech.Rate, _settings.Speech.Voice);
+
         _tick.Tick += OnTick;
     }
 
@@ -70,6 +74,7 @@ public partial class MainWindow : Window
         TryRegister(_settings.Hotkeys.NudgeBack, () => _clock.Nudge(-TimeSpan.FromSeconds(_settings.NudgeSeconds)));
         TryRegister(_settings.Hotkeys.NudgeForward, () => _clock.Nudge(TimeSpan.FromSeconds(_settings.NudgeSeconds)));
         TryRegister(_settings.Hotkeys.EditMode, ToggleEditMode);
+        TryRegister(_settings.Hotkeys.Mute, ToggleMute);
 
         if (failed.Count > 0) _statusExtra = "Hotkey in use: " + string.Join(", ", failed);
 
@@ -85,7 +90,14 @@ public partial class MainWindow : Window
     private void OnTick(object? sender, EventArgs e)
     {
         var events = _scheduler.Update(_clock.Elapsed);
-        if (events.Count > 0) { /* Phase 3 speaks them. */ }
+        if (_speech is not null)
+        {
+            foreach (var evt in events)
+            {
+                if (evt.Kind == TriggerKind.Warning) _speech.Say(SpeechText.For(evt));
+                else if (evt.Kind == TriggerKind.Due && _settings.Speech.AnnounceDue) _speech.Say(SpeechText.For(evt));
+            }
+        }
 
         var elapsed = _clock.Elapsed;
 
@@ -107,8 +119,16 @@ public partial class MainWindow : Window
 
         var parts = new List<string>();
         if (!_clock.IsRunning) parts.Add("PAUSED");
+        if (_speech is null || _speech.Muted) parts.Add("MUTED");
         if (!string.IsNullOrEmpty(_statusExtra)) parts.Add(_statusExtra);
         return string.Join(" · ", parts);
+    }
+
+    private void ToggleMute()
+    {
+        if (_speech is null) return;
+        _speech.Muted = !_speech.Muted;
+        _speech.Say(_speech.Muted ? "Voice off" : "Voice on", force: true);
     }
 
     private void BuildUpcoming(IReadOnlyList<UpcomingAlert> upcoming)
@@ -183,6 +203,7 @@ public partial class MainWindow : Window
     {
         _tick.Stop();
         _hotkeys?.Dispose();
+        _speech?.Dispose();
         base.OnClosed(e);
     }
 }
