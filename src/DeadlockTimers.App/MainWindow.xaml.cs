@@ -35,6 +35,7 @@ public partial class MainWindow : Window
     private CancellationTokenSource? _ocrCts;
     private string _lastOcrText = "";
     private RegionWindow? _regionWindow;
+    private StateServer? _web;
     private bool _editMode;
     private int _topmostCounter;
     private string _statusExtra = "";
@@ -64,6 +65,12 @@ public partial class MainWindow : Window
 
         if (_settings.Speech.Enabled)
             _speech = new SpeechService(_settings.Speech.Volume, _settings.Speech.Rate, _settings.Speech.Voice);
+
+        if (_settings.Web.Enabled)
+        {
+            _web = new StateServer(_settings.Web.Port);
+            try { _web.Start(); } catch (Exception ex) { _statusExtra = "Web: " + ex.Message; }
+        }
 
         _tick.Tick += OnTick;
     }
@@ -114,7 +121,9 @@ public partial class MainWindow : Window
 
         ClockText.Text = TimeFormat.Clock(elapsed);
         StatusText.Text = BuildStatus();
-        BuildUpcoming(_scheduler.GetUpcoming(elapsed, _settings.Overlay.UpcomingCount));
+        var upcoming = _scheduler.GetUpcoming(elapsed, _settings.Overlay.UpcomingCount);
+        BuildUpcoming(upcoming);
+        UpdateWebSnapshot(elapsed, upcoming);
 
         if (++_topmostCounter >= 50)
         {
@@ -155,7 +164,6 @@ public partial class MainWindow : Window
         if (upcoming.Count == 0)
         {
             UpcomingList.Items.Add(Row("No more alerts", "", NormalBrush));
-            return;
         }
 
         foreach (var u in upcoming)
@@ -163,6 +171,18 @@ public partial class MainWindow : Window
             var brush = u.Remaining <= TimeSpan.FromSeconds(WarnSeconds(u.Alert)) ? WarningBrush : NormalBrush;
             UpcomingList.Items.Add(Row(u.Alert.Label, TimeFormat.Countdown(u.Remaining), brush));
         }
+    }
+
+    private void UpdateWebSnapshot(TimeSpan elapsed, IReadOnlyList<UpcomingAlert> upcoming)
+    {
+        if (_web is null) return;
+
+        var rows = upcoming
+            .Select(u => new StateRow(u.Alert.Label, TimeFormat.Countdown(u.Remaining),
+                u.Remaining <= TimeSpan.FromSeconds(WarnSeconds(u.Alert))))
+            .ToList();
+
+        _web.UpdateSnapshot(new StateSnapshot(TimeFormat.Clock(elapsed), _clock.IsRunning, rows));
     }
 
     private int WarnSeconds(AlertDefinition alert) => alert.WarnSeconds ?? _defaultWarn;
@@ -340,6 +360,7 @@ public partial class MainWindow : Window
     {
         _tick.Stop();
         StopOcr();
+        _web?.Dispose();
         _regionWindow?.Close();
         _hotkeys?.Dispose();
         _speech?.Dispose();
