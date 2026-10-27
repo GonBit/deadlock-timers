@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DeadlockTimers.App"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+        Title="Deadlock Timers"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight"
+        ShowActivated="False"
+        MouseLeftButtonDown="OnMouseLeftButtonDown">
+    <Border x:Name="Panel" CornerRadius="6" Padding="10" Background="#CC101014" BorderThickness="0">
+        <StackPanel>
+            <TextBlock x:Name="ClockText" FontSize="28" FontWeight="Bold" Foreground="White"
+                       FontFamily="Consolas" />
+            <TextBlock x:Name="StatusText" FontSize="11" Foreground="Gray" Margin="0,4,0,6" />
+            <ItemsControl x:Name="UpcomingList" FontSize="15" />
+        </StackPanel>
+    </Border>
 </Window>
