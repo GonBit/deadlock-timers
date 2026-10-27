@@ -1,0 +1,35 @@
+{
+  "hotkeys": {
+    "startPause":  "Ctrl+Shift+F9",
+    "reset":       "Ctrl+Shift+F10",
+    "nudgeBack":   "Ctrl+Shift+F11",
+    "nudgeForward":"Ctrl+Shift+F12",
+    "editMode":    "Ctrl+Shift+F8",
+    "mute":        "Ctrl+Shift+F7",
+    "toggleOcr":   "Ctrl+Shift+F6"
+  },
+  "nudgeSeconds": 5,
+  "overlay": {
+    "left": 40,
+    "top": 200,
+    "opacity": 0.85,
+    "upcomingCount": 3
+  },
+  "speech": {
+    "enabled": true,
+    "announceDue": true,
+    "volume": 100,
+    "rate": 0,
+    "voice": ""
+  },
+  "ocr": {
+    "enabled": false,
+    "intervalMs": 1000,
+    "region": { "x": 0, "y": 0, "width": 0, "height": 0 },
+    "saveDebugImage": false
+  },
+  "web": {
+    "enabled": false,
+    "port": 7777
+  }
+}

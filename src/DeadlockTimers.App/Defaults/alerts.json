@@ -1,0 +1,16 @@
+{
+  "defaultWarnSeconds": 15,
+  "alerts": [
+    { "id": "jungle-boxes-03", "time": "3:00",  "label": "Jungle boxes",          "speech": "Jungle boxes",            "enabled": true },
+    { "id": "bridge-05",       "time": "5:00",  "label": "Bridge buffs & towers", "speech": "Bridge buffs and towers", "enabled": true },
+    { "id": "jungle-boxes-06", "time": "6:00",  "label": "Jungle boxes",          "speech": "Jungle boxes",            "enabled": true },
+    { "id": "sinners-08",      "time": "8:00",  "label": "Sinners",               "speech": "Sinners",                 "enabled": true },
+    { "id": "jungle-boxes-09", "time": "9:00",  "label": "Jungle boxes",          "speech": "Jungle boxes",            "enabled": true },
+    { "id": "rift-10",         "time": "10:00", "label": "First rift",            "speech": "First rift",              "enabled": true },
+    { "id": "mid-boxes-10",    "time": "10:00", "label": "Mid boxes",             "speech": "Mid boxes",               "enabled": true },
+    { "id": "jungle-boxes-12", "time": "12:00", "label": "Jungle boxes",          "speech": "Jungle boxes",            "enabled": true },
+    { "id": "mid-boxes-13",    "time": "13:00", "label": "Mid boxes",             "speech": "Mid boxes",               "enabled": true },
+    { "id": "jungle-boxes-15", "time": "15:00", "label": "Jungle boxes",          "speech": "Jungle boxes",            "enabled": true },
+    { "id": "sinners-16",      "time": "16:00", "label": "Sinners",               "speech": "Sinners",                 "enabled": true }
+  ]
+}
