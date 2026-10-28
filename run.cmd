@@ -6,4 +6,5 @@ if errorlevel 1 (
     pause
     exit /b 1
 )
-start "" "src\DeadlockTimers.App\bin\Debug\net10.0-windows10.0.19041.0\DeadlockTimers.App.exe"
+echo Deadlock Timers is running. Close this window to stop it.
+start "" /wait "src\DeadlockTimers.App\bin\Debug\net10.0-windows10.0.19041.0\DeadlockTimers.App.exe"
