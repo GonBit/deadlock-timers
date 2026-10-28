@@ -8,6 +8,17 @@ Full implementation plan: [PLAN.md](PLAN.md).
 Double-click `run.cmd`. It builds the app on your PC (needs the .NET 10 SDK) and starts it.
 Building locally avoids Windows Smart App Control blocking a downloaded, unsigned exe.
 
+### If Windows blocks it
+
+If Smart App Control says "this type of file can be dangerous on the internet", the files still carry a downloaded-from-the-internet tag. Remove it from the whole folder in PowerShell, then run `run.cmd` again:
+
+```powershell
+cd path\to\deadlock-timers
+Get-ChildItem -Recurse | Unblock-File
+```
+
+If you downloaded a zip, right-click the zip, choose Properties, tick Unblock, and extract it again.
+
 To make a standalone exe instead, run `publish.ps1` to get `dist\DeadlockTimers.App.exe`. It is unsigned, so Smart App Control may block it on other PCs.
 
 Default hotkeys (all `Ctrl+Shift+`): `F9` start/pause, `F10` reset, `F11`/`F12` nudge, `F8` edit mode, `F7` mute, `F6` toggle OCR, `F5` quit.
