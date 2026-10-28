@@ -3,11 +3,12 @@
 A small Windows overlay that tracks Deadlock objective timers and gives voice callouts.
 Full implementation plan: [PLAN.md](PLAN.md).
 
-## Run the exe
+## Run it
 
-1. Run `publish.ps1` (needs the .NET 10 SDK) to produce `dist\DeadlockTimers.App.exe`.
-2. Copy that single file anywhere and double-click it. No install, no .NET runtime needed.
-3. Windows SmartScreen may warn about an unknown publisher because the exe is unsigned: More info, then Run anyway.
+Double-click `run.cmd`. It builds the app on your PC (needs the .NET 10 SDK) and starts it.
+Building locally avoids Windows Smart App Control blocking a downloaded, unsigned exe.
+
+To make a standalone exe instead, run `publish.ps1` to get `dist\DeadlockTimers.App.exe`. It is unsigned, so Smart App Control may block it on other PCs.
 
 Default hotkeys (all `Ctrl+Shift+`): `F9` start/pause, `F10` reset, `F11`/`F12` nudge, `F8` edit mode, `F7` mute, `F6` toggle OCR, `F5` quit.
 
