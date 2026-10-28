@@ -19,6 +19,7 @@ public sealed class HotkeySettings
     public string EditMode { get; set; } = "Ctrl+Shift+F8";
     public string Mute { get; set; } = "Ctrl+Shift+F7";
     public string ToggleOcr { get; set; } = "Ctrl+Shift+F6";
+    public string Quit { get; set; } = "Ctrl+Shift+F5";
 }
 
 public sealed class OverlaySettings

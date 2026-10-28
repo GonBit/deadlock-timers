@@ -15,14 +15,17 @@ public sealed class StateServer : IDisposable
 {
     private readonly HttpListener _listener = new();
     private readonly object _lock = new();
-    private readonly string _htmlPath;
+    private readonly byte[] _html;
     private StateSnapshot _snapshot = new("0:00", false, Array.Empty<StateRow>());
 
     public StateServer(int port)
     {
         // localhost prefixes need no admin rights.
         _listener.Prefixes.Add($"http://localhost:{port}/");
-        _htmlPath = Path.Combine(AppContext.BaseDirectory, "Web", "index.html");
+        using var stream = EmbeddedFiles.Open("Web.index.html");
+        using var buffer = new MemoryStream();
+        stream.CopyTo(buffer);
+        _html = buffer.ToArray();
     }
 
     public void UpdateSnapshot(StateSnapshot snapshot)
@@ -60,9 +63,7 @@ public sealed class StateServer : IDisposable
                 }
                 else
                 {
-                    body = File.Exists(_htmlPath)
-                        ? File.ReadAllBytes(_htmlPath)
-                        : Encoding.UTF8.GetBytes("index.html not found in " + Path.Combine(AppContext.BaseDirectory, "Web"));
+                    body = _html;
                     contentType = "text/html";
                 }
 

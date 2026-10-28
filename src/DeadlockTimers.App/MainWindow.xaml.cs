@@ -91,6 +91,7 @@ public partial class MainWindow : Window
         TryRegister(_settings.Hotkeys.EditMode, ToggleEditMode);
         TryRegister(_settings.Hotkeys.Mute, ToggleMute);
         TryRegister(_settings.Hotkeys.ToggleOcr, ToggleOcr);
+        TryRegister(_settings.Hotkeys.Quit, Close);
 
         if (failed.Count > 0) _statusExtra = "Hotkey in use: " + string.Join(", ", failed);
 

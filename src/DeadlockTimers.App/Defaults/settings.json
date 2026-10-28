@@ -6,7 +6,8 @@
     "nudgeForward":"Ctrl+Shift+F12",
     "editMode":    "Ctrl+Shift+F8",
     "mute":        "Ctrl+Shift+F7",
-    "toggleOcr":   "Ctrl+Shift+F6"
+    "toggleOcr":   "Ctrl+Shift+F6",
+    "quit":        "Ctrl+Shift+F5"
   },
   "nudgeSeconds": 5,
   "overlay": {

@@ -21,11 +21,9 @@ public static class AppPaths
             var target = Path.Combine(ConfigDir, name);
             if (File.Exists(target)) continue;
 
-            var source = Path.Combine(AppContext.BaseDirectory, "Defaults", name);
-            if (!File.Exists(source))
-                throw new ConfigException($"Default config file not found: {source}");
-
-            File.Copy(source, target);
+            using var source = EmbeddedFiles.Open("Defaults." + name);
+            using var file = File.Create(target);
+            source.CopyTo(file);
         }
     }
 }
