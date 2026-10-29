@@ -25,6 +25,8 @@ if not defined HAVE_SDK (
 set "DOTNET_CLI_TELEMETRY_OPTOUT=1"
 set "DOTNET_NOLOGO=1"
 set "OUT=%~dp0.run"
+rem A previous instance would lock the exe and break the rebuild.
+taskkill /f /im DeadlockTimers.App.exe >nul 2>nul
 dotnet build "src\DeadlockTimers.App" -c Debug -nologo -v q -o "%OUT%"
 if errorlevel 1 (
     echo Build failed. See the errors above.
@@ -39,5 +41,4 @@ if not exist "%OUT%\DeadlockTimers.App.exe" (
     exit /b 1
 )
 
-echo Deadlock Timers is running. Close this window to stop it.
-start "" /wait "%OUT%\DeadlockTimers.App.exe"
+start "" "%OUT%\DeadlockTimers.App.exe"

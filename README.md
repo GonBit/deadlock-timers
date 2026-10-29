@@ -6,7 +6,7 @@ Full implementation plan: [PLAN.md](PLAN.md).
 ## Run it
 
 Double-click `run.cmd`. It builds the app on your PC and starts it. If the .NET 10 SDK isn't installed, it downloads a private copy into `.dotnet\` first (about 300 MB, needs internet, no admin rights).
-Building locally avoids Windows Smart App Control blocking a downloaded, unsigned exe.
+Building locally avoids Windows Smart App Control blocking a downloaded, unsigned exe. The console window closes as soon as the app starts; quit with `Ctrl+Shift+F5`. Running `run.cmd` again restarts it.
 
 ### If Windows blocks it
 
